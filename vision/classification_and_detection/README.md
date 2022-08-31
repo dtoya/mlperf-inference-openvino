@@ -4,6 +4,8 @@ This is the reference implementation for MLPerf Inference benchmarks.
 
 You can find a short tutorial how to use this benchmark [here](https://github.com/mlperf/inference/blob/master/vision/classification_and_detection/GettingStarted.ipynb).
 
+You can find steps to run benchark with OpenVINO backend [here](README_openvino.md)
+
 ## Supported Models
 
 | model | framework | accuracy | dataset | model link | model source | precision | notes |

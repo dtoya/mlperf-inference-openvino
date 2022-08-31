@@ -17,3 +17,5 @@ preprocessed
 python/preprocessed
 output
 mlperf_log_*
+models/
+dataset/

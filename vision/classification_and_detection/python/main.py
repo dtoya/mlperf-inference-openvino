@@ -95,7 +95,21 @@ SUPPORTED_PROFILES = {
         "backend": "onnxruntime",
         "model-name": "resnet50",
     },
-
+#    "resnet50-openvino": {
+#        "inputs": "map/TensorArrayStack/TensorArrayGatherV3",
+#        "outputs": "softmax_tensor",
+#        "dataset": "imagenet",
+#        "backend": "openvino",
+#        "model-name": "resnet50",
+#    },
+    "resnet50-openvino": {
+        "inputs": "input_tensor:0",
+        "outputs": "ArgMax:0",
+        "dataset": "imagenet",
+        "backend": "openvino",
+        "model-name": "resnet50",
+    },
+    
     # mobilenet
     "mobilenet-tf": {
         "inputs": "input:0",
@@ -258,6 +272,9 @@ def get_backend(backend):
     elif backend == "tflite":
         from backend_tflite import BackendTflite
         backend = BackendTflite()
+    elif backend == "openvino":
+        from backend_openvino import BackendOpenVINO
+        backend = BackendOpenVINO()
     else:
         raise ValueError("unknown backend: " + backend)
     return backend

@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "env": {
+                "DATA_DIR": "/data/dataset_local/mlperf_dataset/imagenet2012",
+                "MODEL_DIR": "/home/user/work/ovmlperf/mlperf-inference-openvino/vision/classification_and_detection/models/public/resnet-50-tf/FP32"
+            }, 
+            "args":[
+                "--profile", "resnet50-openvino",
+                "--mlperf_conf", "../../mlperf.conf",
+                "--model", "./models/resnet50_v1.xml",
+                "--dataset-path", "./dataset/imagenet2012",
+                "--output", "./output/$name",
+                "--backend", "openvino",
+                "--scenario", "Offline",
+                "--max-batchsize", "4",
+                "--accuracy",
+            ],
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "python/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}

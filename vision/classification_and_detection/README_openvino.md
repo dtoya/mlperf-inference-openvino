@@ -7,6 +7,7 @@ $ git clone git@github.com:dtoya/mlperf-inference-openvino.git
 $ cd mlperf-inference-openvino
 $ git checkout r2.0_openvino
 $ git submodule update --init --recursive
+$ sudo apt install build-essential python3-dev
 
 $ cd vision/classification_and_detection/
 $ python3 -m venv venv

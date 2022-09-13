@@ -26,13 +26,13 @@ sys.path.insert(0, os.getcwd())
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--backend", choices=["tf", "pytorch", "onnxruntime", "tf_estimator"], default="tf", help="Backend")
+        "--backend", choices=["tf", "pytorch", "onnxruntime", "tf_estimator", "openvino"], default="tf", help="Backend")
     parser.add_argument("--scenario", choices=["SingleStream", "Offline",
                         "Server", "MultiStream"], default="Offline", help="Scenario")
     parser.add_argument("--accuracy", action="store_true",
                         help="enable accuracy pass")
     parser.add_argument("--quantized", action="store_true",
-                        help="use quantized model (only valid for onnxruntime backend)")
+                        help="use quantized model (only valid for onnxruntime/openvino backend)")
     parser.add_argument("--profile", action="store_true",
                         help="enable profiling (only valid for onnxruntime backend)")
     parser.add_argument(
@@ -74,6 +74,9 @@ def main():
     elif args.backend == "onnxruntime":
         from onnxruntime_SUT import get_onnxruntime_sut
         sut = get_onnxruntime_sut(args)
+    elif args.backend == "openvino":
+        from openvino_SUT import get_openvino_sut
+        sut = get_openvino_sut(args)
     else:
         raise ValueError("Unknown backend: {:}".format(args.backend))
 

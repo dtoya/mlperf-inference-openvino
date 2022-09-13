@@ -9,6 +9,15 @@ from openvino.runtime import Core, get_version
 import backend
 
 import numpy as np
+import json
+import os
+
+def param_to_string(parameters) -> str:
+    """Convert a list / tuple of parameters returned from IE to a string"""
+    if isinstance(parameters, (list, tuple)):
+        return ', '.join([str(x) for x in parameters])
+    else:
+        return str(parameters)
 
 class BackendOpenVINO(backend.Backend):
     def __init__(self):
@@ -26,11 +35,42 @@ class BackendOpenVINO(backend.Backend):
         """image_format. """
         return "NHWC"
 
+    def set_config(self, config = {}):
+        for device in config.keys():
+            self.core.set_property(device, config[device])
+    
+    def query_devices(self, device):
+        print(f'OpenVINO Backend Device Supported Property: {device}')
+        for property_key in self.core.get_property(device, 'SUPPORTED_PROPERTIES'):
+            if property_key not in ('SUPPORTED_METRICS', 'SUPPORTED_CONFIG_KEYS', 'SUPPORTED_PROPERTIES'):
+                try:
+                    property_val = self.core.get_property(device, property_key)
+                except TypeError:
+                    property_val = 'UNSUPPORTED TYPE'
+                print(f'\t{property_key}: {param_to_string(property_val)}')
+        print('')
+
     def load(self, model_path, inputs=None, outputs=None):
         """Load model and find input/outputs from the model file."""
         model = self.core.read_model(model_path)
-        self.compiled_model = self.core.compile_model(model, "CPU")
-        
+
+        config = {}
+        if  'MLPERF_OPENVINO_CONFIG' in os.environ:
+            file = os.environ['MLPERF_OPENVINO_CONFIG'] 
+            if os.path.exists(file):
+                with open(file) as f:
+                    config.update(json.load(f))
+            else:
+                print(f"WARNING: Not found OpenVINO config file {file}")
+        self.set_config(config)
+
+        device = 'CPU'
+        if 'MLPERF_OPENVINO_DEVICE' in os.environ:
+            device = os.environ['MLPERF_OPENVINO_DEVICE']
+
+        self.compiled_model = self.core.compile_model(model, device)
+        self.query_devices(device)
+
         # get input and output names
         if not inputs:
             self.inputs = model.inputs

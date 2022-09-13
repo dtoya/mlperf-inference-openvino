@@ -4,10 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "env": {
                 "DATA_DIR": "/data/dataset_local/mlperf_dataset/imagenet2012",
-                "MODEL_DIR": "/home/user/work/ovmlperf/mlperf-inference-openvino/vision/classification_and_detection/models/public/resnet-50-tf/FP32"
+                "MODEL_DIR": "/data/model_local/mlperf/vision/classification_and_detection/models/public/resnet-50-tf/FP32",
+                "MLPERF_OPENVINO_DEVICE": "GPU",
+                "MLPERF_OPENVINO_CONFIG": "./openvino-config.json"
             }, 
             "args":[
                 "--profile", "resnet50-openvino",

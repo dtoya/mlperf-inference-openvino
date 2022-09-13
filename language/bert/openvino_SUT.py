@@ -26,7 +26,7 @@ from openvino.runtime import Core
 from transformers import BertConfig, BertForQuestionAnswering
 from squad_QSL import get_squad_QSL
 
-class BERT_ONNXRuntime_SUT():
+class BERT_OpenVINO_SUT():
     def __init__(self, args):
         self.profile = args.profile
         self.core = Core()
@@ -93,9 +93,7 @@ class BERT_ONNXRuntime_SUT():
         pass
 
     def __del__(self):
-        if self.profile:
-            print("ONNX runtime profile dumped to: '{}'".format(self.sess.end_profiling()))
         print("Finished destroying SUT.")
 
-def get_onnxruntime_sut(args):
-    return BERT_ONNXRuntime_SUT(args)
+def get_openvino_sut(args):
+    return BERT_OpenVINO_SUT(args)
